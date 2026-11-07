@@ -1,0 +1,35 @@
+{
+  "package_id": "Sun-Panel",
+  "display_name": "Sun-Panel",
+  "type": "binary",
+  "upstream_repo": "hslr-s/sun-panel",
+  "description": "Sun-Panel 一个服务器、NAS导航面板、Homepage、浏览器首页。默认登录账号：admin@sun.cc 密码：12345678",
+  "description_chs": "Sun-Panel 一个服务器、NAS导航面板、Homepage、浏览器首页。默认登录账号：admin@sun.cc 密码：12345678",
+  "maintainer": "红烧猎人",
+  "maintainer_url": "https://github.com/hslr-s/sun-panel/",
+  "distributor": "onelxzy",
+  "distributor_url": "https://github.com/onelxzy",
+  "os_min_ver": "7.1-42661",
+  "category": "Utilities",
+  "changelog": "自动构建，对应上游 {tag}。",
+  "architectures": [
+    {
+      "family": "x86_64",
+      "asset_pattern": "^sun-panel_v.*_linux_amd64\\.tar\\.gz$",
+      "binary_path": "sun-panel",
+      "binary_dest": "sun-panel",
+      "extra_dirs": [
+        "web"
+      ]
+    },
+    {
+      "family": "arm",
+      "asset_pattern": "^sun-panel_v.*_linux_arm64\\.tar\\.gz$",
+      "binary_path": "sun-panel",
+      "binary_dest": "sun-panel",
+      "extra_dirs": [
+        "web"
+      ]
+    }
+  ]
+}

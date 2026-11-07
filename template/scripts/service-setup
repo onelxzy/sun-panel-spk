@@ -1,0 +1,58 @@
+### Generic variables and functions
+### -------------------------------
+
+if [ -z "${SYNOPKG_PKGNAME}" ] || [ -z "${SYNOPKG_DSM_VERSION_MAJOR}" ]; then
+  echo "Error: Environment variables are not set." 1>&2;
+  echo "Please run me using synopkg instead. Example: \"synopkg start [packagename]\"" 1>&2;
+  exit 1
+fi
+
+USER="Sun-Panel"
+EFF_USER="Sun-Panel"
+
+# start-stop-status script redirect stdout/stderr to LOG_FILE
+LOG_FILE="${SYNOPKG_PKGVAR}/${SYNOPKG_PKGNAME}.log"
+
+# Service command has to deliver its pid into PID_FILE
+PID_FILE="${SYNOPKG_PKGVAR}/${SYNOPKG_PKGNAME}.pid"
+
+
+### Package specific variables and functions
+### ----------------------------------------
+
+SERVICE_COMMAND="./sun-panel"
+SVC_CWD=${SYNOPKG_PKGDEST}
+SVC_BACKGROUND=y
+SVC_WRITE_PID=y
+
+service_postinst ()
+{
+    for folder in "conf" "database" "uploads" "custom"
+    do
+        if [ ! -d "${SYNOPKG_PKGVAR}/${folder}" ]; then
+            mkdir -p "${SYNOPKG_PKGVAR}/${folder}"
+            cp -r "${SYNOPKG_PKGDEST}/${folder}/." "${SYNOPKG_PKGVAR}/${folder}/"
+        fi
+        rm -rf "${SYNOPKG_PKGDEST}/${folder}"
+        ln -s "${SYNOPKG_PKGVAR}/${folder}" "${SYNOPKG_PKGDEST}/${folder}"
+    done
+}
+
+service_preupgrade ()
+{
+    for folder in "conf" "database" "uploads" "custom"
+    do
+        if [ ! -d "${SYNOPKG_PKGVAR}/${folder}" ]; then
+            mkdir -p "${SYNOPKG_PKGVAR}/${folder}"
+            cp -r "${SYNOPKG_PKGDEST}/${folder}/." "${SYNOPKG_PKGVAR}/${folder}/"
+        fi
+        rm -rf "${SYNOPKG_PKGDEST}/${folder}"
+        ln -s "${SYNOPKG_PKGVAR}/${folder}" "${SYNOPKG_PKGDEST}/${folder}"
+    done
+
+    if [ -d "${SYNOPKG_PKGVAR}/web/custom" ]; then
+        cp -r "${SYNOPKG_PKGVAR}/web/custom/." "${SYNOPKG_PKGVAR}/custom/"
+        rm -rf "${SYNOPKG_PKGVAR}/web"
+        sed -i '/source_temp_path=.\/runtime\/temp/a web_path=.\/web\ncustom_style_path=.\/custom' ${SYNOPKG_PKGVAR}/conf/conf.ini
+    fi
+}

@@ -1,0 +1,13 @@
+{
+    ".url": {
+        "SYNO.SDS.Sun-Panel.Application": {
+            "title": "Sun-Panel",
+            "desc": "Sun-Panel",
+            "icon": "images/icon_{0}.png",
+            "type": "url",
+            "protocol": "http",
+            "port": "13002",
+            "allUsers": false
+        }
+    }
+}
